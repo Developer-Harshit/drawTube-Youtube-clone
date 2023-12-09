@@ -1,19 +1,14 @@
 {
-  "name": "Youtube Clone",
+  "name": "youtube-clone",
+  "version": "1.0.0",
   "description": "",
-  "private": false,
+  "main": "index.js",
   "scripts": {
-    "dev": "nuxt dev --port 4321",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "serve": "esno .output/server/index.mjs",
-    "p:ish": "pnpm install --shamefully-hoist",
-    "p:up": "pnpm up"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend" : "cd frontend && npm run dev",
+    "backend" : "cd backend && npm run dev"
   },
-  "devDependencies": {
-    "@nuxt/devtools": "^1.0.5",
-    "nuxt": "latest"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
