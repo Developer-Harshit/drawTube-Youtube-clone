@@ -1,6 +1,6 @@
 <script setup>
 const { createSketch, clearCanvas } = useSketch();
-const easingFac = 0.1;
+const easingFac = 0.7;
 var clearFunc;
 onMounted(() => {
   const mouse = { x: 0, y: 0 };
@@ -29,7 +29,10 @@ onMounted(() => {
     ctx.stroke();
     ctx.closePath();
   }
-
+ addEventListener('resize', (e) => {
+cnv.width = innerWidth * 0.8;
+    cnv.height = innerWidth * 0.2;
+  });
   addEventListener('mousedown', (e) => {
     updateMouse(e.clientX, e.clientY, 1);
     isDrawing = true;
@@ -98,10 +101,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
 }
-body,
-#cnv1 {
-  overscroll-behavior: none;
-}
+
 body {
   position: absolute;
   width: 100%;
@@ -112,6 +112,7 @@ body {
 }
 canvas {
   border-radius: 2px;
+overscroll-behavior: none;
   box-shadow: 0px 0px 5px #1b66c95c;
 }
 
