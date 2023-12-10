@@ -1,7 +1,7 @@
 <script setup>
 const Canvas = useCanvas();
 const sketch = new Canvas();
-const { createPickr } = usePickr();
+
 const paneItems = ['W', 'A', 'S', 'D'];
 
 onMounted(() => {
