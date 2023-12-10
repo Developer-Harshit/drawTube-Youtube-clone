@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/devtools', '@vite-pwa/nuxt'],
   devtools: { enabled: true, vscode: {} },
   css: ['~/assets/icon-style.css'],
+
   pwa: {
     manifest: {
       name: 'Nuxt3 PWA',
@@ -33,11 +34,18 @@ export default defineNuxtConfig({
         }
       ]
     },
+    registerType: 'autoUpdate',
+
     workbox: {
-      navigateFallback: '/login'
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}']
+    },
+    client: {
+      installPrompt: true,
+      periodicSyncForUpdates: 20 // 3600
     },
     devOptions: {
       enabled: true,
+      navigateFallbackAllowlist: [/^\/$/],
       type: 'module'
     }
   }

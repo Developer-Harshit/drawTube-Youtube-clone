@@ -1,74 +1,35 @@
 <script setup>
-const { createSketch, clearCanvas } = useSketch();
-const easingFac = 0.7;
-var clearFunc;
+const Canvas = useCanvas();
+const sketch = new Canvas();
+const { createPickr } = usePickr();
+const paneItems = ['W', 'A', 'S', 'D'];
+
 onMounted(() => {
-  const mouse = { x: 0, y: 0 };
-  const pmouse = { x: 0, y: 0 };
+  sketch.createCanvas(0.8, 0.2, 'cnv1');
+  sketch.addEvents();
+  sketch.current = sketch.createSurface(1980);
 
-  const cnv = createSketch('cnv1', innerWidth * 0.8, innerWidth * 0.2);
-  const ctx = cnv.getContext('2d');
-  var isDrawing = false;
-  clearFunc = clearCanvas(cnv, ctx);
+  sketch.fillSurf(sketch.current, '#ffffff');
 
-  function updateMouse(cx, cy, eFac = easingFac) {
-    const rect = cnv.getBoundingClientRect();
-    const targetX = cx - rect.left;
-    const targetY = cy - rect.top;
-    pmouse.x = mouse.x;
-    pmouse.y = mouse.y;
-    mouse.x += (targetX - mouse.x) * eFac;
-    mouse.y += (targetY - mouse.y) * eFac;
+  function animate() {
+    requestAnimationFrame(animate);
+
+    sketch.fillSurf(sketch, '#212121');
+    sketch.drawCurrent();
   }
-  function drawLine() {
-    if (!isDrawing) return;
-    ctx.strokeStyle = 'red';
-    ctx.beginPath();
-    ctx.moveTo(pmouse.x, pmouse.y);
-    ctx.lineTo(mouse.x, mouse.y);
-    ctx.stroke();
-    ctx.closePath();
-  }
- addEventListener('resize', (e) => {
-cnv.width = innerWidth * 0.8;
-    cnv.height = innerWidth * 0.2;
-  });
-  addEventListener('mousedown', (e) => {
-    updateMouse(e.clientX, e.clientY, 1);
-    isDrawing = true;
-  });
-
-  addEventListener('mouseup', () => {
-    isDrawing = false;
-  });
-
-  cnv.addEventListener('mousemove', (e) => {
-    updateMouse(e.clientX, e.clientY);
-    drawLine();
-  });
-
-  addEventListener('touchstart', (e) => {
-    isDrawing = true;
-
-    const touch = e.touches[0] || e.changedTouches[0];
-    updateMouse(touch.clientX, touch.clientY, 1);
-  });
-  addEventListener('touchend', () => {
-    isDrawing = false;
-  });
-  addEventListener('touchmove', (e) => {
-    const touch = e.touches[0] || e.changedTouches[0];
-
-    updateMouse(touch.clientX, touch.clientY);
-    drawLine();
-  });
+  animate();
 });
 </script>
 <template>
+  <div id="pal-body">
+    <div id="pal"></div>
+  </div>
   <div class="box">
     <div class="container">
       <div class="item">
-        <IconGoogle2 />
+        <NuxtLink to="/">
+          <IconGoogle2 />
+        </NuxtLink>
       </div>
       <div class="item">
         <h1>Sign in</h1>
@@ -78,8 +39,25 @@ cnv.width = innerWidth * 0.8;
         <!-- <input type="text" placeholder="Email or Phone" /> -->
       </div>
       <div class="item btns-flex">
-        <button class="btn-invert" @click="clearFunc">Clear</button>
+        <button class="btn-invert" @click="sketch.fillSurf(sketch.current)">
+          Clear
+        </button>
         <button class="btn">Next</button>
+      </div>
+      <div>
+        <span
+          class="pane"
+          v-for="item in paneItems"
+          :key="item"
+          :data-val="item"
+          @click="sketch.paneEvent"
+        >
+          {{ item }}
+        </span>
+      </div>
+      <div>
+        <span class="zoom">+</span>
+        <span class="zoom">-</span>
       </div>
     </div>
   </div>
@@ -90,7 +68,17 @@ cnv.width = innerWidth * 0.8;
   font-family: 'Google Sans', 'Noto Sans Myanmar UI', arial, sans-serif;
   color: rgb(32, 33, 36);
 }
-
+span {
+  display: inline-block;
+  border: 2px solid blue;
+  padding: 1rem;
+  margin: 0.2rem;
+  transition: all 0.4s;
+  user-select: none;
+}
+span:hover {
+  transform: scale(1.1);
+}
 .box {
   position: absolute;
   width: 100%;
@@ -112,7 +100,7 @@ body {
 }
 canvas {
   border-radius: 2px;
-overscroll-behavior: none;
+  overscroll-behavior: none;
   box-shadow: 0px 0px 5px #1b66c95c;
 }
 
