@@ -37,7 +37,7 @@ export default defineNuxtConfig({
     registerType: 'autoUpdate',
 
     workbox: {
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}']
+      globPatterns: ['**/*.{png}']
     },
     client: {
       installPrompt: true,

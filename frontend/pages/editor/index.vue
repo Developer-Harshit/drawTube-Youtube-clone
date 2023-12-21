@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <EditorVideo></EditorVideo>
 </template>
 
 <script setup></script>

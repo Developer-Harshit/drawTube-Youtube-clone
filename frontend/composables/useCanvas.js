@@ -8,11 +8,9 @@ export const useCanvas = () => {
   class Canvas {
     constructor() {
       this.mouse = { x: 0, y: 0, px: 0, py: 0 };
-      this.draw = false;
+      this.isdrawing = false;
 
-      this.surfaces = [];
-      this.current = this;
-      this.ease = 0.6;
+      this.ease = 0.4;
     }
     paneEvent(e) {
       const val = e.target.dataset.val;
@@ -59,15 +57,7 @@ export const useCanvas = () => {
       this.imgOptions.dx = this.controls.cx - this.controls.bw / 2;
       this.imgOptions.dy = this.controls.cy - this.controls.bh / 2;
     }
-
-    createCanvas(w, h, pid) {
-      this.wRatio = w;
-      this.hRatio = h;
-      const surf = this.createSurface(innerWidth, pid);
-      this.cnv = surf.cnv;
-
-      this.ctx = surf.ctx;
-
+    resetControls() {
       this.controls = {
         cx: this.cnv.width / 2,
         cy: this.cnv.height / 2,
@@ -81,82 +71,99 @@ export const useCanvas = () => {
         dh: this.cnv.height
       };
     }
+    init(w, h, pid) {
+      this.wRatio = w;
+      this.hRatio = h;
+      const surf = this.createSurface(
+        Math.min(innerHeight, innerWidth) * 0.8,
+        pid
+      );
+      this.cnv = surf.cnv;
+
+      this.ctx = surf.ctx;
+      this.resetControls();
+    }
     clearSurface() {
-      this.current.ctx.clearRect(
+      this.get().ctx.clearRect(
         0,
         0,
-        this.current.cnv.width,
-        this.current.cnv.height
+        this.get().cnv.width,
+        this.get().cnv.height
       );
     }
-
-    drawCurrent() {
+    draw(surf) {
       this.ctx.drawImage(
-        this.current.cnv,
+        surf.cnv,
         this.imgOptions.dx,
         this.imgOptions.dy,
         this.imgOptions.dw,
         this.imgOptions.dh
       );
     }
+
     getLocalMouse() {
       const maxX = this.imgOptions.dx + this.imgOptions.dw;
       const maxY = this.imgOptions.dy + this.imgOptions.dh;
+      const otherCnv = this.get().cnv;
       return {
-        x: remap(
-          this.mouse.x,
-          this.imgOptions.dx,
-          maxX,
-          0,
-          this.current.cnv.width
-        ),
-        y: remap(
-          this.mouse.y,
-          this.imgOptions.dy,
-          maxY,
-          0,
-          this.current.cnv.height
-        ),
-        px: remap(
-          this.mouse.px,
-          this.imgOptions.dx,
-          maxX,
-          0,
-          this.current.cnv.width
-        ),
-        py: remap(
-          this.mouse.py,
-          this.imgOptions.dy,
-          maxY,
-          0,
-          this.current.cnv.height
-        )
+        x: remap(this.mouse.x, this.imgOptions.dx, maxX, 0, otherCnv.width),
+        y: remap(this.mouse.y, this.imgOptions.dy, maxY, 0, otherCnv.height),
+        px: remap(this.mouse.px, this.imgOptions.dx, maxX, 0, otherCnv.width),
+        py: remap(this.mouse.py, this.imgOptions.dy, maxY, 0, otherCnv.height)
       };
     }
-    addEvents() {
-      addEventListener('resize', () => {
-        this.resize(this.cnv, innerWidth);
+    enableDraw() {
+      this.isdrawing = true;
+      this.get().ctx.beginPath();
+    }
+    disableDraw() {
+      this.isdrawing = false;
+
+      this.get().ctx.closePath();
+    }
+    addKeyBind() {
+      addEventListener('keyup', (e) => {
+        if (e.key == 'r') this.disableDraw();
       });
-      addEventListener('mousedown', (e) => {
-        this.updateMouse(e.clientX, e.clientY, 1);
-        this.draw = true;
-      });
-      addEventListener('touchstart', (e) => {
-        this.draw = true;
-        const touch = e.touches[0] || e.changedTouches[0];
-        this.updateMouse(touch.clientX, touch.clientY, 1);
-      });
-      addEventListener('mouseup', () => (this.draw = false));
-      addEventListener('touchend', () => (this.draw = false));
-      addEventListener('keydown', () => (this.draw = true));
-      addEventListener('keyup', () => (this.draw = false));
       addEventListener('keypress', (e) => {
         this.paneSurface(e.key);
         this.zoomSurface(e.key);
       });
+      addEventListener('keydown', (e) => {
+        if (e.key == 'r') this.enableDraw();
+      });
+    }
+    removeKeyBind() {
+      removeEventListener('keyup', Window);
+      removeEventListener('keypress', Window);
+      removeEventListener('keydown', Window);
+    }
+    addEvents() {
+      addEventListener('resize', () => {
+        this.resize(this.cnv, Math.min(innerHeight, innerWidth) * 0.8);
+      });
+      this.addKeyBind();
+      addEventListener('mousedown', (e) => {
+        this.updateMouse(e.clientX, e.clientY, 1);
+
+        this.enableDraw();
+      });
+      addEventListener('touchstart', (e) => {
+        this.enableDraw();
+        const touch = e.touches[0] || e.changedTouches[0];
+        this.updateMouse(touch.clientX, touch.clientY, 1);
+      });
+
+      addEventListener('mouseup', () => {
+        this.disableDraw();
+      });
+      addEventListener('touchend', () => {
+        this.disableDraw();
+      });
 
       this.cnv.addEventListener('mousemove', (e) => {
         this.updateMouse(e.clientX, e.clientY);
+
         this.drawLine();
       });
       addEventListener('touchmove', (e) => {
@@ -165,14 +172,14 @@ export const useCanvas = () => {
         this.drawLine();
       });
     }
-    createSurface(size, pid = false) {
+    createSurface(size, cnvParent = false) {
       const cnv = document.createElement('canvas');
-
+      const ctx = cnv.getContext('2d');
       this.resize(cnv, size);
-      if (!pid) return { cnv, ctx: cnv.getContext('2d') };
-      const cnvParent = document.getElementById(pid);
-      if (cnvParent) cnvParent.appendChild(cnv);
-      return { cnv, ctx: cnv.getContext('2d') };
+      this.fill({ cnv, ctx });
+      if (!cnvParent) return { cnv, ctx };
+      else cnvParent.appendChild(cnv);
+      return { cnv, ctx };
     }
     updateMouse(cx, cy, eFac = this.ease) {
       const rect = this.cnv.getBoundingClientRect();
@@ -183,27 +190,32 @@ export const useCanvas = () => {
       this.mouse.x += (targetX - this.mouse.x) * eFac;
       this.mouse.y += (targetY - this.mouse.y) * eFac;
     }
-    fillSurf(surf, colorVal = '#ffffff') {
+    fill(surf, colorVal = '#ffffff') {
       surf.ctx.fillStyle = colorVal;
       surf.ctx.fillRect(0, 0, surf.cnv.width, surf.cnv.height);
     }
+    get() {
+      return this.current;
+    }
     drawLine() {
-      if (!this.draw) return;
-      const ctx = this.current.ctx;
+      if (!this.isdrawing) return;
 
+      const ctx = this.get().ctx;
       var mouse = this.getLocalMouse();
 
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
       ctx.strokeStyle = 'red';
-      ctx.beginPath();
+
       ctx.moveTo(mouse.px, mouse.py);
       ctx.lineTo(mouse.x, mouse.y);
       ctx.stroke();
-      ctx.closePath();
     }
 
-    resize(cnv, size) {
-      cnv.width = this.wRatio * size;
-      cnv.height = this.hRatio * size;
+    resize(cnv, size, wR = this.wRatio, hR = this.hRatio) {
+      cnv.width = wR * size;
+      cnv.height = hR * size;
     }
   }
   return Canvas;

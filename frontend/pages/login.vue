@@ -1,29 +1,5 @@
-<script setup>
-const Canvas = useCanvas();
-const sketch = new Canvas();
-
-const paneItems = ['W', 'A', 'S', 'D'];
-
-onMounted(() => {
-  sketch.createCanvas(0.8, 0.2, 'cnv1');
-  sketch.addEvents();
-  sketch.current = sketch.createSurface(1980);
-
-  sketch.fillSurf(sketch.current, '#ffffff');
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    sketch.fillSurf(sketch, '#212121');
-    sketch.drawCurrent();
-  }
-  animate();
-});
-</script>
+<script setup></script>
 <template>
-  <div id="pal-body">
-    <div id="pal"></div>
-  </div>
   <div class="box">
     <div class="container">
       <div class="item">
@@ -35,29 +11,20 @@ onMounted(() => {
         <h1>Sign in</h1>
         <p>Press in black area to draw</p>
       </div>
-      <div class="item" id="cnv1">
-        <!-- <input type="text" placeholder="Email or Phone" /> -->
+      <div class="item">
+        <label for="email"> Email</label>
+        <input type="email" name="email" id="email" />
       </div>
+      <div class="item">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" />
+      </div>
+
       <div class="item btns-flex">
-        <button class="btn-invert" @click="sketch.fillSurf(sketch.current)">
-          Clear
+        <button class="btn-invert" @click="sketch.fill(sketch.current)">
+          Reset
         </button>
         <button class="btn">Next</button>
-      </div>
-      <div>
-        <span
-          class="pane"
-          v-for="item in paneItems"
-          :key="item"
-          :data-val="item"
-          @click="sketch.paneEvent"
-        >
-          {{ item }}
-        </span>
-      </div>
-      <div>
-        <span class="zoom">+</span>
-        <span class="zoom">-</span>
       </div>
     </div>
   </div>
@@ -68,6 +35,7 @@ onMounted(() => {
   font-family: 'Google Sans', 'Noto Sans Myanmar UI', arial, sans-serif;
   color: rgb(32, 33, 36);
 }
+
 span {
   display: inline-block;
   border: 2px solid blue;
@@ -82,8 +50,7 @@ span:hover {
 .box {
   position: absolute;
   width: 100%;
-  max-width: 100%;
-  height: 100%;
+
   margin: 0;
   display: flex;
   align-items: center;
@@ -93,15 +60,7 @@ span:hover {
 body {
   position: absolute;
   width: 100%;
-  max-width: 100%;
-  height: 100%;
   margin: 0;
-  overflow-y: hidden;
-}
-canvas {
-  border-radius: 2px;
-  overscroll-behavior: none;
-  box-shadow: 0px 0px 5px #1b66c95c;
 }
 
 .container {
@@ -124,7 +83,7 @@ input {
   font-size: 1.2rem;
 
   margin: 1px 1px 0 1px;
-  padding: 3rem 4rem;
+  padding: 0.3rem 0.4rem;
 }
 
 h1 {
