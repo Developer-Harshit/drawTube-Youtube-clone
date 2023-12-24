@@ -11,8 +11,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "nodemon": "^2.0.7"
+    "express": "^4.18.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs-extra": "^11.2.0",
+    "image-data-uri": "^2.0.1",
+    "mongodb": "^6.3.0",
+    "nodemon": "^2.0.22"
   }
 }
