@@ -32,6 +32,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="box">
+    <div id="cnv1" ref="cnvParent" :class="[{ hide: !editorVisible }]"></div>
     <Transition name="fade" mode="out-in">
       <div class="container" v-if="!editorVisible">
         <div class="item">
@@ -72,8 +73,6 @@ onMounted(() => {
         </div>
       </div>
     </Transition>
-
-    <div id="cnv1" ref="cnvParent" :class="[{ hide: !editorVisible }]"></div>
   </div>
 </template>
 
@@ -98,19 +97,9 @@ onMounted(() => {
   opacity: 0;
 }
 
-.box {
-  position: absolute;
-  width: 100%;
-
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 body {
   position: absolute;
-  width: 100%;
+
   margin: 0;
 }
 canvas {

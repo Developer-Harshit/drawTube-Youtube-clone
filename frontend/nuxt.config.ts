@@ -4,6 +4,7 @@ import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   modules: ['@nuxt/devtools', '@vite-pwa/nuxt'],
   devtools: { enabled: true, vscode: {} },
+
   css: ['~/assets/icon-style.css'],
   routeRules: {
     'http://localhost:5000/**': { cors: true }

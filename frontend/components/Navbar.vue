@@ -39,7 +39,7 @@ body {
   left: 50%;
 
   display: flex;
-  /* overflow-x: auto; */
+  overflow: auto;
 
   justify-content: space-evenly;
   margin-left: -25%;
@@ -82,7 +82,9 @@ body {
   background-color: #ffffff;
   color: rgb(208, 28, 9);
 }
-
+.router-link-active .nav-icon {
+  color: rgb(208, 28, 9);
+}
 .special {
   padding: 0;
   background-color: #0c0101;
@@ -96,7 +98,7 @@ body {
   display: none;
 }
 .special .nav-icon {
-  position: absolute;
+  position: fixed;
   color: rgb(254, 242, 242);
   font-size: calc(36px + 1rem);
   border-radius: 50px;
@@ -107,13 +109,14 @@ body {
 }
 .special:hover .nav-icon,
 .special.router-link-active .nav-icon {
-  background-color: white;
+  background-color: #0c0101;
   transform: translateY(calc(-18px - 0.5rem));
 }
 
 .nav-icon {
   transition: all 0.3s;
   font-size: 18px;
+  color: rgb(254, 242, 242);
 }
 
 @media (max-width: 960px) {
