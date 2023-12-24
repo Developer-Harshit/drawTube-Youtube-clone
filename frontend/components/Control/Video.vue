@@ -1,6 +1,8 @@
 <template>
   <div>
-    <span class="zoom" data-val="Q" @click="props.editor.zoomEvent">+</span>
+    <span class="ha control-span" data-val="Q" @click="props.editor.zoomEvent"
+      >+</span
+    >
   </div>
 </template>
 

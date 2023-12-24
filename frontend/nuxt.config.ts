@@ -5,12 +5,15 @@ export default defineNuxtConfig({
   modules: ['@nuxt/devtools', '@vite-pwa/nuxt'],
   devtools: { enabled: true, vscode: {} },
   css: ['~/assets/icon-style.css'],
+  routeRules: {
+    'http://localhost:5000/**': { cors: true }
+  },
 
   pwa: {
     manifest: {
-      name: 'Nuxt3 PWA',
-      short_name: 'Nuxt3 PWA',
-      description: 'Testing Nuxt3 PWA',
+      name: 'DrawTube PWA',
+      short_name: 'DrawTube PWA',
+      description: 'Testing DrawTube PWA',
       icons: [
         {
           src: '/icon_64.png',

@@ -64,8 +64,4 @@ onMounted(() => {
   animate();
 });
 </script>
-<style>
-body {
-  background-color: #212121;
-}
-</style>
+<style scoped></style>

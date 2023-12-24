@@ -1,7 +1,7 @@
 <template>
   <div>
     <span
-      class="pane"
+      class="pane control-span"
       v-for="item in paneItems"
       :key="item"
       :data-val="item"
@@ -16,3 +16,5 @@
 const props = defineProps(['editor']);
 const paneItems = ['W', 'A', 'S', 'D'];
 </script>
+
+<style scoped></style>
