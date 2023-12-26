@@ -1,6 +1,6 @@
 {
-  "name": "Youtube Clone",
-  "description": "",
+  "name": "youtubeclone",
+  "description": "thisIsdescription",
   "private": false,
   "scripts": {
     "dev": "nuxt dev --port 4321",
