@@ -1,53 +1,42 @@
 <template>
-  <li class="video-list">
-    <NuxtImg src="/temp/thumbnail.png" class="video-thumbnail" quality="1" />
+  <li class="skeleton-list video-list">
+    <img src="/skeleton/thumbnail.png" class="video-thumbnail" />
     <div class="video-info">
-      <NuxtImg src="/temp/profile.png" quality="1" />
+      <img src="/skeleton/profile.png" />
       <article class="video-detail">
-        <p>skeleton title</p>
+        <p></p>
         <div>
-          <span>skeleton username</span>
-          <span>skeleton date</span>
+          <span></span>
+          <span></span>
         </div>
       </article>
     </div>
   </li>
 </template>
 
-<style>
-.video-thumbnail {
-  width: 100%;
+<style src="assets/styles/videoItem.css"></style>
+<style scoped>
+.skeleton-list {
+  animation: pulse 2s ease-in-out infinite;
 }
-.video-info {
-  padding: 0.4rem;
-}
-.video-info,
-.video-detail {
-  display: flex;
-  gap: 0.5rem;
-}
-.video-info img {
-  width: 2rem;
-  height: 2rem;
-}
-.video-detail {
-  width: 100%;
-  overflow: hidden;
-  flex-direction: column;
-}
-.video-detail p {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 0.8rem;
+.skeleton-list .video-detail p {
+  width: 70%;
+  height: 0.8rem;
   margin: 0;
-  white-space: nowrap;
+  background-color: #d7d3d3;
 }
-.video-detail div {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.skeleton-list .video-detail span {
+  width: 20%;
+  height: 0.6rem;
+  background-color: #d7d3d3;
 }
-.video-detail span {
-  font-size: 0.6rem;
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 </style>

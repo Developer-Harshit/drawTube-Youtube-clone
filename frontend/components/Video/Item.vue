@@ -21,46 +21,5 @@
   {videoThumbnail:"string",userProfile:"string",videoTitle:"string",videoDate:"string",userName:"string" ,videoLink:"string"}
 )
 </script>
-
-<style scoped>
-.video-thumbnail:hover,
-.video-thumbnail:active {
-  transform: scale(0.93);
-}
-.video-thumbnail {
-  transition: all 0.3s;
-  width: 100%;
-}
-.video-info {
-  padding: 0.4rem;
-}
-.video-info,
-.video-detail {
-  display: flex;
-  gap: 0.5rem;
-}
-.video-info img {
-  width: 2rem;
-  height: 2rem;
-}
-.video-detail {
-  width: 100%;
-  overflow: hidden;
-  flex-direction: column;
-}
-.video-detail p {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 0.8rem;
-  margin: 0;
-  white-space: nowrap;
-}
-.video-detail div {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.video-detail span {
-  font-size: 0.6rem;
-}
-</style>
+<style></style>
+<style src="assets/styles/videoItem.css"></style>

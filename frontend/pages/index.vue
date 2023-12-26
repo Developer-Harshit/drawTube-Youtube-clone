@@ -13,7 +13,6 @@
   list-style: none;
   gap: 4px;
 }
-
 .video-list {
   width: 480px;
 }
