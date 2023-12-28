@@ -2,14 +2,14 @@
   <div class="video-div">
     <video controls autoPlay crossorigin="anonymus">
       <source
-        src="http://localhost:5000/video/6586a41f4c05f7c32a067141"
+        :src="'http://localhost:5000/animation/' + data.output.animationid"
         type="video/mp4"
       />
     </video>
     <article class="info">
       <h2>Description</h2>
       <p class="title">
-        Title of the video is this nonononononononononononononono
+        {{ data.output.title }}
       </p>
       <div class="detail">
         <p><span>Likes</span> <span>0</span></p>
@@ -17,36 +17,26 @@
         <p><span>Creator</span> <span>Username</span></p>
       </div>
       <LongText class="desc-box">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
-        praesentium non numquam exercitationem, voluptates aliquid eveniet,
-        eligendi, vero voluptatibus quam atque. Iusto ipsa atque repellat
-        ducimus ullam unde laborum consectetur enim ex officia, hic eaque at
-        incidunt veritatis aperiam sequi voluptas. Autem facilis sunt rem
-        tempore ipsum non molestias! Aperiam dolorem soluta eius, ipsa
-        consequuntur saepe aliquam ratione cupiditate fugit ipsam deleniti
-        minima dolore eveniet cumque. Dolorum dignissimos exercitationem sit
-        pariatur iste provident neque? Nulla ipsam labore maxime laudantium
-        autem quo eos quasi iste! Ipsa beatae, alias quibusdam saepe ullam sequi
-        porro animi aut aliquam dolore quas omnis quaerat recusandae, quo
-        ratione aperiam corrupti error debitis doloribus quod maxime explicabo
-        vero similique. Voluptatum a minima asperiores soluta nisi non dolores
-        omnis autem, consequuntur quia tempora temporibus repellat tenetur sed
-        accusamus accusantium similique minus sunt eum officiis. Doloremque
-        magnam amet quibusdam magni sit ipsa nemo molestiae ipsum, recusandae
-        vel similique aut quis quae nisi ut obcaecati blanditiis iusto, id
-        facere distinctio iure nihil porro. Aut provident expedita voluptatum
-        dolores ullam non porro ipsam sint natus molestias officia sed
-        consequatur voluptatem voluptas dolore, omnis autem assumenda culpa
-        modi, delectus facere molestiae aliquid est eveniet? Quia reiciendis
-        ipsum saepe autem obcaecati, delectus molestias.
+        {{ data.output.desc }}
       </LongText>
 
       <!-- <img src="/temp/profile.png" /> -->
       <UserCard user-img="/temp/profile.png"> Username </UserCard>
     </article>
   </div>
+  <div>
+    Data:
+    {{ data }}
+  </div>
 </template>
+<script setup>
+const route = useRoute();
+console.log(route.params.id);
 
+const { data, pending, error, refresh } = await useFetch(
+  'http://localhost:5000/video/' + route.params.id
+);
+</script>
 <style scoped>
 .video-div {
   text-align: center;

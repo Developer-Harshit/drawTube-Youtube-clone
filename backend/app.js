@@ -7,19 +7,22 @@ const express = require("express");
 const cors = require("cors");
 // const path = require('path');
 const app = express();
+require("dotenv").config();
 
 app.use(
   express.json({
-    limit: "500MB",
+    limit: "512MB",
   })
 );
 var corsOptions = {
-  origin: "http://localhost:4321",
+  origin: process.env.APP_URL,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 // Route import
+const animationRoutes = require("./routes/Animation.js");
 const videoRoutes = require("./routes/Video.js");
+
 const draftRoutes = require("./routes/Draft.js");
 const userRoutes = require("./routes/User.js");
 const { connectDB } = require("./database/db.js");
@@ -44,25 +47,23 @@ app.get("/", function (req, res) {
   res.send(htmlcode);
 });
 
-app.use("/video", cors(corsOptions), videoRoutes);
+app.use("/animation", cors(corsOptions), animationRoutes);
+app.use(cors());
+app.use("/video", videoRoutes);
 app.use("/draft", draftRoutes);
 app.use("/user", userRoutes);
-app.use(cors());
 app.use((err, req, res, next) => {
   res.status(400).json({ msg: "message from error handler" });
 });
 
 // listen to our server
-connectDB(
-  "mongodb://127.0.0.1:27017/test" || process.env.MONGO_URL,
-  function (err) {
-    if (err) {
-      console.log("Cant connect to MongoDB");
-      process.exit(1);
-    } else {
-      app.listen(5000, () => {
-        console.log("Listening on port 5000.....");
-      });
-    }
+connectDB(process.env.MONGO_URL, function (err) {
+  if (err) {
+    console.log("Cant connect to MongoDB");
+    process.exit(1);
+  } else {
+    app.listen(5000, () => {
+      console.log("Listening on port 5000.....");
+    });
   }
-);
+});

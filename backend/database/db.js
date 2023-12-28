@@ -13,9 +13,9 @@ async function connectDB(url, done) {
     done(err);
   }
   console.log("Connected to DB");
-  state.db = state.conn.db("test");
+  state.db = state.conn.db(process.env.MONGO_DB);
   state.bucket = new GridFSBucket(state.db, {
-    bucketName: "videobucket",
+    bucketName: "animationbucket",
     chunkSizeBytes: 1024 * 255,
   });
 

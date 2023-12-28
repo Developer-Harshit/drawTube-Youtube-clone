@@ -2,8 +2,19 @@ const express = require("express");
 
 const { getDB } = require("../database/db");
 const router = express.Router();
+const { getObjectId } = require("../controller/Utils");
 
-router.post("/login", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const o_id = getObjectId(id, next);
+  if (!o_id) return;
+  const UserCollection = getDB().collection("users");
+
+  const output = await UserCollection.findOne({ _id: o_id });
+
+  res.json({ msg: "sucess", output });
+});
+router.post("/log", async (req, res) => {
   // gets email and password , verifies them and then returns jwt ,abd user info
   // access email ,password
   const { email, password } = req.body;
@@ -24,15 +35,13 @@ router.post("/login", async (req, res) => {
   // generates jwt token
 
   //attaches jwt
+  user.password = null;
 
   // returns userdata and
   res.json({ msg: "sucess", user });
-
-  const output = await UserCollection.find({}).toArray();
-  res.json({ msg: "sucess", output });
 });
 
-router.post("/signin", async (req, res) => {
+router.post("/sign", async (req, res) => {
   // get email password ,profile url and stores them in db
   const { username, email, password, image } = req.body;
   // parse password

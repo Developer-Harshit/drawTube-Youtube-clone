@@ -1,11 +1,11 @@
 <template>
   <Transition name="fade">
-    <ul class="video-ul" v-if="finished">
+    <ul class="video-ul" v-if="!pending">
       <VideoItem
-        v-for="video in videos"
-        :key="video"
-        video-link="/video/jack"
-        video-title="The is the title of the video"
+        v-for="video in data.output"
+        :key="video._id"
+        :video-link="'/video/' + video._id"
+        :video-title="video.title"
         video-thumbnail="/temp/thumbnail.png"
         user-profile="/temp/profile.png"
         user-name="Username"
@@ -20,16 +20,9 @@
 </template>
 
 <script setup>
-const finished = ref(false);
-let videos = ref();
-const loadData = () => {
-  setTimeout(() => {
-    finished.value = true;
-    videos.value = [1, 2, 3, 4, 56, 8, 8, 9, 0, 13, 45, 366, 34, 64];
-  }, 1000 * 5);
-};
-
-loadData();
+const { data, pending, error, refresh } = useLazyFetch(
+  'http://localhost:5000/video'
+);
 </script>
 
 <style scoped>

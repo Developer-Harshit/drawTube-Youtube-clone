@@ -35,6 +35,7 @@ const createFrames = async function (images, frameFolder) {
 const saveIntoFS = async function (videoPath) {
   await fsp.copyFile(videoPath, "./output.mp4");
 };
+
 const setProc = function (proc) {
   return proc
     .format("mp4")
@@ -44,18 +45,22 @@ const setProc = function (proc) {
     .videoBitrate("1000");
 };
 
-const createVideo = async function (videoFolder, frameFolder, imageOptions) {
+const createAnimation = async function (
+  outputFolder,
+  frameFolder,
+  imageOptions
+) {
   var proc = ffmpeg(frameFolder + "frame%05d.png");
   const loopTime = imageOptions.count / imageOptions.fps;
   setProc(proc);
 
   return proc
     .inputFPS(imageOptions.fps)
-    .loop(loopTime * 300)
-    .save(videoFolder + "output.mp4");
+    .loop(loopTime)
+    .save(outputFolder + "output.mp4");
 };
 
-class VideoBucket {
+class MyBucket {
   static download(fileId) {
     const bucket = getBucket();
     return bucket.openDownloadStream(fileId, {
@@ -64,13 +69,14 @@ class VideoBucket {
   }
   static async findById(fileId) {
     const db = getDB();
-    const VideoCollection = db.collection("videobucket.files");
-    return await VideoCollection.findOne({ _id: fileId });
+    const AnimationCollection = db.collection("animationbucket.files");
+
+    return await AnimationCollection.findOne({ _id: fileId });
   }
   static async findAll() {
     const db = getDB();
-    const VideoCollection = db.collection("videobucket.files");
-    return await VideoCollection.find().toArray();
+    const AnimationCollection = db.collection("animationbucket.files");
+    return await AnimationCollection.find().toArray();
   }
   static async delete(fileId) {
     const bucket = getBucket();
@@ -102,7 +108,7 @@ module.exports = {
   createFileInDir,
   createFrames,
   saveIntoFS,
-  createVideo,
+  createAnimation,
 
-  VideoBucket,
+  MyBucket,
 };

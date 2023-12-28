@@ -1,91 +1,61 @@
-// Express router
-const os = require("os");
-const fs = require("fs");
-const fsp = require("fs/promises");
 const express = require("express");
-const path = require("path");
+const { getDB } = require("../database/db");
+
+const { getObjectId } = require("../controller/Utils");
+
 const router = express.Router();
 
-const {
-  createFrames,
-  createVideo,
-  VideoBucket,
-  saveIntoFS,
-} = require("../controller/videoBucket");
-const { getObjectId } = require("../controller/Utils");
-const { getBucket, getDB } = require("../database/db");
-
 router.get("/", async (req, res) => {
-  console.log("getting video");
-  res.json({ result: await VideoBucket.findAll() });
-});
+  const VideoCollection = getDB().collection("video");
+  // type: "all" | "partial"
+  const { type, from, count } = req.query;
+  let findQuery = {};
+  let sortQuery = { _id: 1 };
+  let output;
+  if (type == "partial")
+    output = await VideoCollection.find(findQuery)()
+      .sort(sortQuery)
+      .skip(parseInt(from))
+      .limit(parseInt(count))
+      .toArray();
+  else output = await VideoCollection.find(findQuery).sort(sortQuery).toArray();
 
+  res.json({ msg: "sucess", output });
+});
+router.get("/purge", async (req, res, next) => {
+  const VideoCollection = getDB().collection("video");
+
+  const output = await VideoCollection.deleteMany({ title: "" });
+
+  res.json({ msg: "sucess", output });
+});
 router.get("/:id", async (req, res, next) => {
-  const viewFolder = await fsp.mkdtemp(path.join(os.tmpdir(), "view-"));
-  const viewPath = path.join(viewFolder, "video.mp4");
   const { id } = req.params;
   const o_id = getObjectId(id, next);
   if (!o_id) return;
-  await VideoBucket.download(o_id, viewPath);
+  const VideoCollection = getDB().collection("video");
 
-  // Get the id from the route & Generating a videoPath
+  const output = await VideoCollection.findOne({ _id: o_id });
 
-  // Reading the file Size using the file system
-  const videoStat = fs.statSync(viewPath);
-  const fileSize = videoStat.size;
-  // For videos, a user’s browser will send a range parameter in the request. This lets the server know which chunk of the video to send back to the client.
-  var videoRange = req.headers.range;
-
-  if (!videoRange) {
-    videoRange = "bytes=0-";
-  }
-  const parts = videoRange.replace(/bytes=/, "").split("-");
-  // creates a read stream using the start and end values of the range
-  const start = parseInt(parts[0], 10);
-  const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-  // Set the Content-Length of the response headers to the chunk size that is calculated from the start and end values
-  const chunksize = end - start + 1;
-  console.log(start, end, chunksize);
-  const file = fs.createReadStream(viewPath, { start, end });
-  const head = {
-    "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-    "Accept-Ranges": "bytes",
-    "Content-Length": chunksize,
-    "Content-Type": "video/mp4",
-  };
-  // 206 Signifying that the response contains partial content
-  res.writeHead(206, head);
-  file.pipe(res);
+  res.json({ msg: "sucess", output });
 });
+
 router.post("/", async (req, res, next) => {
-  const { images, fps } = req.body;
-  const videoFolder = await fsp.mkdtemp(path.join(os.tmpdir(), "video-"));
-  const frameFolder = await fsp.mkdtemp(path.join(os.tmpdir(), "frames-"));
-  await createFrames(images, frameFolder);
-  const video = await createVideo(videoFolder, frameFolder, {
-    count: images.length,
-    fps,
-  });
-  video.on("end", async function () {
-    console.log("file has been converted succesfully");
-    saveIntoFS(videoFolder + "output.mp4");
-    const result = await VideoBucket.upload(videoFolder + "output.mp4");
-    res.json({ msg: "sucessful", result });
-  });
+  const { title, desc, animationid, length, userid, thumbnail } = req.body;
 
-  video.on("error", function (err) {
-    console.log("an error happened: " + err.message);
-    res.status(404).json({ msg: "cant create video" });
+  const VideoCollection = getDB().collection("video");
+  if (!getObjectId(userid, next)) return;
+  if (!getObjectId(animationid, next)) return;
+
+  const output = await VideoCollection.insertOne({
+    title,
+    desc,
+    animationid,
+    length,
+    userid,
+    thumbnail,
   });
-});
-
-router.delete("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const o_id = getObjectId(id, next);
-  if (!o_id) return;
-  const result = await VideoBucket.delete(o_id);
-
-  res.json({ msg: "sucess", result });
+  res.json({ msg: "sucess", output });
 });
 
 module.exports = router;
