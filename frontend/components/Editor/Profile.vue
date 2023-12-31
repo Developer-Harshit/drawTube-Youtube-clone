@@ -7,7 +7,7 @@ const { editor } = defineProps(['editor']);
 
 onMounted(() => {
   editor.init(0.7, 0.7, 'cnv1');
-  editor.current = editor.createSurface(1280);
+  editor.current = editor.createSurface(192);
   editor.fill(editor.current, '#ffffff');
   editor.addEvents();
 

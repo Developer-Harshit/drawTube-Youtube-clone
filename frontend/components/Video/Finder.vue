@@ -1,8 +1,8 @@
 <template>
   <Transition name="fade">
-    <ul class="video-ul" v-if="!pending">
+    <ul class="video-ul" v-if="videos.length > 0">
       <VideoItem
-        v-for="video in data.output"
+        v-for="video in videos"
         :key="video._id"
         :video-link="'/video/' + video._id"
         :video-title="video.title"
@@ -20,9 +20,11 @@
 </template>
 
 <script setup>
-const { data, pending, error, refresh } = useLazyFetch(
-  'http://localhost:5000/video'
-);
+const videos = [];
+
+// const { data, pending, error, refresh } = useLazyFetch(
+//   'http://localhost:5000/video'
+// );
 </script>
 
 <style scoped>

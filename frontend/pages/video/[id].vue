@@ -1,15 +1,15 @@
 <template>
-  <div class="video-div">
+  <div class="video-div" v-if="video && state">
     <video controls autoPlay crossorigin="anonymus">
       <source
-        :src="'http://localhost:5000/animation/' + data.output.animationid"
+        :src="'http://localhost:5000/animation/' + video.animationid"
         type="video/mp4"
       />
     </video>
     <article class="info">
       <h2>Description</h2>
       <p class="title">
-        {{ data.output.title }}
+        {{ video.title }}
       </p>
       <div class="detail">
         <p><span>Likes</span> <span>0</span></p>
@@ -17,7 +17,7 @@
         <p><span>Creator</span> <span>Username</span></p>
       </div>
       <LongText class="desc-box">
-        {{ data.output.desc }}
+        {{ video.desc }}
       </LongText>
 
       <!-- <img src="/temp/profile.png" /> -->
@@ -32,7 +32,8 @@
 <script setup>
 const route = useRoute();
 console.log(route.params.id);
-
+const video = {};
+const state = ref(false);
 const { data, pending, error, refresh } = await useFetch(
   'http://localhost:5000/video/' + route.params.id
 );
@@ -108,8 +109,7 @@ video {
   text-align: left;
   word-wrap: break-word;
 }
-.desc-box {
-}
+
 .desc-box {
   font-size: 0.7rem;
   line-height: 1.1rem;

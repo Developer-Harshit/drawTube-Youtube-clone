@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { defineNuxtConfig } from 'nuxt/config';
+
 import { resolve } from 'path';
 export default defineNuxtConfig({
   modules: ['@nuxt/devtools', '@vite-pwa/nuxt', '@nuxt/image'],
@@ -13,11 +14,35 @@ export default defineNuxtConfig({
     public: resolve(__dirname, './public')
   },
   css: ['~/assets/icon-style.css'],
-  routeRules: {
-    'http://localhost:5000/**': { cors: true }
-  },
+  // routeRules: {
+  //   'http://localhost:5000/**': { cors: true }
+  //   // 'http://localhost:5000/animation/**': { cors: true }
+  // },
 
   pwa: {
+    registerType: 'autoUpdate',
+
+    includeAssets: ['**/*'],
+    workbox: {
+      globPatterns: [
+        '**/*',
+        '**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico,html}'
+      ],
+
+      // Don't fallback on document based (e.g. `/some-page`) requests
+      // This removes an errant console.log message from showing up.
+
+      navigateFallback: null
+    },
+    client: {
+      installPrompt: true,
+      periodicSyncForUpdates: 20 // 3600
+    },
+    devOptions: {
+      enabled: true,
+      navigateFallbackAllowlist: [/^\/$/],
+      type: 'module'
+    },
     manifest: {
       name: 'DrawTube PWA',
       short_name: 'DrawTube PWA',
@@ -586,20 +611,6 @@ export default defineNuxtConfig({
           sizes: '1024x1024'
         }
       ]
-    },
-    registerType: 'autoUpdate',
-
-    workbox: {
-      globPatterns: ['**/*.{png}']
-    },
-    client: {
-      installPrompt: true,
-      periodicSyncForUpdates: 20 // 3600
-    },
-    devOptions: {
-      enabled: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      type: 'module'
     }
   }
 });

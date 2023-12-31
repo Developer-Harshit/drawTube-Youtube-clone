@@ -3,7 +3,7 @@
   "description": "thisIsdescription",
   "private": false,
   "scripts": {
-    "dev": "nuxt dev --port 4321",
+    "dev": "nuxt dev --port 6969",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -18,5 +18,4 @@
     "nuxt": "latest",
     "@nuxt/image": "^1.1.0"
   }
-  
 }

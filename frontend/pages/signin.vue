@@ -17,7 +17,7 @@ const toggleEditor = () => {
 onMounted(() => {
   sketch.init(1, 1, cnvParent.value);
 
-  sketch.current = sketch.createSurface(1280);
+  sketch.current = sketch.createSurface(192);
   sketch.fill(sketch.current, '#ffffff');
   sketch.addEvents();
 

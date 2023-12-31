@@ -23,22 +23,22 @@ export const useEditor = () => {
     get() {
       return this.surfaces[this.idx.value];
     }
-    play(fps = 1000, isPlaying) {
+    play(fps = 12, isPlaying) {
       if (this.interval) clearInterval(this.interval);
-
+      const frameTimeMS = 1000 / fps;
       isPlaying.value = true;
-      this.idx.value = -1;
+      this.idx.value = 0;
       this.interval = setInterval(() => {
-        this.idx.value += 1;
         this.fill(this, '#212121');
         this.draw(this.get());
-        if (this.idx.value == this.surfaces.length - 1) {
+        this.idx.value += 1;
+        if (this.idx.value == this.surfaces.length || !isPlaying.value) {
           isPlaying.value = false;
           this.idx.value = 0;
           clearInterval(this.interval);
           console.log('cleared');
         }
-      }, fps);
+      }, frameTimeMS);
     }
   }
   return Editor;
