@@ -18,7 +18,7 @@ const createFileInDir = async function (fileUrl, frameFolder, fileIndex) {
 
     const fName = await ImageDataURI.outputFile(
         fileUrl,
-        frameFolder + "frame" + "0".repeat(zeroCount) + fileIndex + ".png"
+        frameFolder + "/frame" + "0".repeat(zeroCount) + fileIndex + ".png"
     );
     console.log(fName);
 };
@@ -47,14 +47,14 @@ const createAnimation = async function (
     frameFolder,
     imageOptions
 ) {
-    var proc = ffmpeg(frameFolder + "frame%05d.png");
+    var proc = ffmpeg(frameFolder + "/frame%05d.png");
     const loopTime = imageOptions.count / imageOptions.fps;
     setProc(proc);
 
     return proc
         .inputFPS(imageOptions.fps)
         .loop(loopTime)
-        .save(videoFolder + "output.mp4");
+        .save(videoFolder + "/output.mp4");
 };
 
 module.exports = {

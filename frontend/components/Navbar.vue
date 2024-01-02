@@ -1,12 +1,11 @@
 <script setup>
-const router = useRouter();
 // home search create profile logout
 const navLinks = [
-  { to: '/', icon: 'home', text: 'Home' },
-  { to: '/search', icon: 'search', text: 'Search' },
-  { to: '/editor', icon: 'add_circle', text: 'Create', special: true },
-  { to: '/signin', icon: 'person', text: 'Profile' },
-  { to: '/logout', icon: 'logout', text: 'Logout' }
+  { to: "/", icon: "home", text: "Home" },
+  { to: "/search", icon: "search", text: "Search" },
+  { to: "/editor", icon: "add", text: "Create" },
+  { to: "/signin", icon: "person", text: "Profile" },
+  { to: "/logout", icon: "logout", text: "Logout" }
 ];
 </script>
 <template>
@@ -16,9 +15,6 @@ const navLinks = [
       :key="link.text"
       :to="link.to"
       class="nav-link"
-      :class="{
-        special: link.special
-      }"
     >
       <i class="material-icons nav-icon">{{ link.icon }}</i>
       <span class="nav-text">{{ link.text }}</span>
@@ -77,40 +73,12 @@ body {
 }
 
 .router-link-active,
-.router-link-active:hover,
-.special:hover .nav-icon {
+.router-link-active:hover {
   background-color: #ffffff;
   color: rgb(208, 28, 9);
 }
 .router-link-active .nav-icon {
   color: rgb(208, 28, 9);
-}
-.special {
-  padding: 0;
-  background-color: #0c0101;
-}
-.special:hover,
-.router-link-active.special {
-  background-color: #0c0101;
-}
-
-.special .nav-text {
-  display: none;
-}
-.special .nav-icon {
-  position: fixed;
-  color: rgb(254, 242, 242);
-  font-size: calc(36px + 1rem);
-  border-radius: 50px;
-}
-
-.router-link-active.special .nav-icon {
-  color: rgb(223, 45, 45);
-}
-.special:hover .nav-icon,
-.special.router-link-active .nav-icon {
-  background-color: #0c0101;
-  transform: translateY(calc(-18px - 0.5rem));
 }
 
 .nav-icon {

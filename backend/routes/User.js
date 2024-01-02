@@ -9,7 +9,8 @@ const router = express.Router();
 //--------------------------------------------------------//
 // GET - ALL USER's DRAFT
 router.post("/sign", async (req, res) => {
-    const { username, usertag: userhandle, password, dataurl } = req.body;
+    const { username, userhandle, password } = req.body;
+    console.log(typeof process.env.SALT_ROUNDS);
     //----------------------------------------------------//
     // VERIFY FOR VALID DATA
     const verifyError = {
@@ -40,7 +41,7 @@ router.post("/sign", async (req, res) => {
             message: "Something went wrong",
         });
     }
-
+    console.log(mongoResult);
     if (mongoResult) {
         verifyError.message = "User already exists";
         return res.status(400).json(verifyError);
@@ -48,7 +49,7 @@ router.post("/sign", async (req, res) => {
 
     //----------------------------------------------------//
     // GENERATE ENCRYPTED PASSWORD
-    const hashed = User.encrypt(password);
+    const hashed = await User.encrypt(password);
     //----------------------------------------------------//
     // STORE USER DATA IN DB
     const uniqueId = uuidv4();
@@ -63,9 +64,10 @@ router.post("/sign", async (req, res) => {
     };
     const mongoError = {
         message: "Unable to save user to database",
-        sucess: true,
-        error: e,
+        sucess: false,
+        error: true,
         type: "SERVER",
+        code: 500,
     };
     try {
         result = await User.uploadData(userData);
@@ -141,6 +143,7 @@ router.post("/log", async (req, res) => {
         name: mongoResult.name,
         handle: mongoResult.handle,
         profile: mongoResult.profile,
+        legit: true,
     });
     //----------------------------------------------------//
     // Send token as sucess response
@@ -150,7 +153,6 @@ router.post("/log", async (req, res) => {
         error: false,
         result: {
             token: token,
-            id: result.inserted_id,
         },
     });
 });

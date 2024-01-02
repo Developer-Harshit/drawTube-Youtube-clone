@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Navbar></Navbar>
+    <Teleport to="body">
+      <Navbar></Navbar>
+    </Teleport>
 
     <slot />
   </div>
@@ -29,7 +31,7 @@
 <script setup>
 useHead({
   bodyAttrs: {
-    class: 'default'
+    class: "default"
   }
 });
 </script>

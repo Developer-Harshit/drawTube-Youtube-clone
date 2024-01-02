@@ -1,10 +1,7 @@
 <template>
   <div class="video-div" v-if="video && state">
     <video controls autoPlay crossorigin="anonymus">
-      <source
-        :src="'http://localhost:5000/animation/' + video.animationid"
-        type="video/mp4"
-      />
+      <source :src="video.url" type="video/mp4" />
     </video>
     <article class="info">
       <h2>Description</h2>
@@ -21,7 +18,7 @@
       </LongText>
 
       <!-- <img src="/temp/profile.png" /> -->
-      <UserCard user-img="/temp/profile.png"> Username </UserCard>
+      <UserCard :user-img="user.profile"> {{ user.name }} </UserCard>
     </article>
   </div>
   <div>
@@ -32,11 +29,21 @@
 </template>
 <script setup>
 const route = useRoute();
-console.log(route.params.id);
-const video = {};
-const state = ref(false);
+
+const video = {
+  user: { profile: "ha" },
+  title: "test title",
+  desc: "test desc",
+  url: "test url"
+};
+const user = {
+  name: "test name",
+  profile: "test",
+  handle: "testhandle"
+};
+const state = ref(true);
 const { data, pending, error, refresh } = await useFetch(
-  'http://localhost:5000/video/' + route.params.id
+  "http://localhost:5000/video/" + route.params.id
 );
 </script>
 <style scoped>

@@ -1,58 +1,64 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { defineNuxtConfig } from 'nuxt/config';
+import { defineNuxtConfig } from "nuxt/config";
 
-import { resolve } from 'path';
+import { resolve } from "path";
 export default defineNuxtConfig({
   ssr: true,
 
   app: {
-    htmlAttrs: {
-      lang: 'en'
-    },
     head: {
-      charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1'
+      htmlAttrs: {
+        lang: "en"
+      },
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1"
     }
   },
-  modules: ['@nuxt/devtools', '@vite-pwa/nuxt', '@nuxt/image'],
-  devtools: { enabled: true, vscode: {} },
+  modules: ["@nuxt/devtools", "@vite-pwa/nuxt", "@nuxt/image"],
+  devtools: {
+    enabled: true,
+    vscode: {},
+
+    timeline: {
+      enabled: true
+    }
+  },
 
   alias: {
-    '~': __dirname,
-    '@': __dirname,
-    '~~': __dirname,
-    '@@': __dirname,
-    assets: resolve(__dirname, './assets'),
-    public: resolve(__dirname, './public')
+    "~": __dirname,
+    "@": __dirname,
+    "~~": __dirname,
+    "@@": __dirname,
+    assets: resolve(__dirname, "./assets"),
+    public: resolve(__dirname, "./public")
   },
-  css: ['~/assets/icon-style.css'],
+  css: ["~/assets/icon-style.css"],
   nitro: {
     prerender: {
-      routes: ['/', 'login', 'signin', '/editor', '/search', '/logout']
+      routes: ["/", "login", "signin", "/editor", "/search", "/logout"]
     }
   },
   pwa: {
     manifest: false, // public/manifest.webmanifest
-    strategies: 'generateSW',
-    injectRegister: 'auto',
-    registerType: 'autoUpdate',
+    strategies: "generateSW",
+    injectRegister: "auto",
+    registerType: "autoUpdate",
     //includeAssets: ['avatar.svg', 'privacy.txt'],
     workbox: {
-      navigateFallback: '/',
+      navigateFallback: "/",
       globPatterns: [
-        '**/*',
-        '**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}'
+        "**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}"
       ],
 
       navigateFallbackDenylist: [/^\/api/],
       runtimeCaching: [
         {
           urlPattern: ({ url }) => {
-            return url.pathname.startsWith('/api');
+            return url.pathname.startsWith("/api");
           },
-          handler: 'CacheFirst' as const,
+          handler: "CacheFirst",
           options: {
-            cacheName: 'api-cache',
+            cacheName: "api-cache",
             cacheableResponse: { statuses: [0, 200] }
           }
         }
@@ -60,11 +66,12 @@ export default defineNuxtConfig({
     },
     client: {
       installPrompt: true,
-      periodicSyncForUpdates: 3600 // 360 for testing only
+      periodicSyncForUpdates: 360 // 360 for testing only
     },
     devOptions: {
       enabled: true,
-      navigateFallback: '/',
+      type: "module",
+      navigateFallback: "/",
       navigateFallbackAllowlist: [/^\/$/]
     }
   }

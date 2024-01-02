@@ -1,10 +1,17 @@
 const { getDB } = require("../database/db");
 const bcrypt = require("bcrypt");
-const saltRounds = process.env.SALT_ROUNDS;
+const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
+const cloudinary = require("cloudinary");
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET,
+    secure: true,
+});
 const dbName = "users";
 function getPublicId(id) {
-    return `drawtube/${dbName}/${id}.png`;
+    return `drawtube/${dbName}/${id}`;
 }
 class User {
     static async findByID(id) {
@@ -41,7 +48,8 @@ class User {
             "https://res.cloudinary.com/" +
             process.env.CLOUD_NAME +
             "/image/upload/" +
-            getPublicId(fileid)
+            getPublicId(fileid) +
+            ".png"
         );
     }
     static async updateData(uid, setData) {
@@ -51,6 +59,5 @@ class User {
         const UsersCollection = getDB().collection(dbName);
         return await UsersCollection.updateOne({ _id: uid }, updateQuery);
     }
-    static async uploadProfile() {}
 }
 module.exports = User;

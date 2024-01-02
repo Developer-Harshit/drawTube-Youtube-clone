@@ -13,11 +13,11 @@ const checkAuth = async (req, res, next) => {
             message: "Cant verify the token",
         });
     }
-    console.log(req.token);
+
     if (!token || !token.legit)
         return res.status(400).json({
             sucess: false,
-            error: e,
+            error: true,
             type: "CLIENT",
             message: "Invalid or undefined token",
         });
@@ -46,6 +46,7 @@ const checkAuth = async (req, res, next) => {
 
     req.user = userData;
     req.token = token;
+
     next();
 };
 module.exports = checkAuth;

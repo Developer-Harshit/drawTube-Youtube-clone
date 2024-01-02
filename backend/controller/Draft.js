@@ -26,9 +26,10 @@ class Draft {
             public_id: getPublicId(fileid),
             resource_type: "raw",
             overwrite: true,
+            chunk_size: (1024 * 1024) / 2,
         });
     }
-    static async getLink(fileid) {
+    static getLink(fileid) {
         return (
             "https://res.cloudinary.com/" +
             process.env.CLOUD_NAME +

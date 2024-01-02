@@ -9,19 +9,20 @@ cloudinary.v2.config({
 
 const dbName = "videos";
 function getPublicId(id) {
-    return `drawtube/${dbName}/${id}.mp4`;
+    return `drawtube/${dbName}/${id}`;
 }
 
 class Video {
     static async deleteCloudData(id) {
         return await cloudinary.v2.api.delete_resources([getPublicId(id)]);
     }
-    static async getCloudLink(fileid) {
+    static getCloudLink(fileid) {
         return (
             "https://res.cloudinary.com/" +
             process.env.CLOUD_NAME +
             "/video/upload/" +
-            getPublicId(fileid)
+            getPublicId(fileid) +
+            ".mp4"
         );
     }
 
@@ -32,7 +33,7 @@ class Video {
     static async uploadVideo(videoPath, fileid) {
         return await cloudinary.v2.uploader.upload(videoPath, {
             public_id: getPublicId(fileid),
-            resource_type: "mp4",
+            resource_type: "video",
             overwrite: true,
         });
     }
@@ -40,7 +41,7 @@ class Video {
         const VideosCollection = getDB().collection(dbName);
 
         let sortQuery = { date: 1 };
-        return await VideosCollection.find(findQuery)()
+        return await VideosCollection.find(findQuery)
             .sort(sortQuery)
             .skip(parseInt(from))
             .limit(parseInt(count))

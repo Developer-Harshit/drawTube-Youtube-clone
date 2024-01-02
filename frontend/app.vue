@@ -8,18 +8,18 @@
 
 <script setup>
 useHead({
-  title: 'Drawtube',
+  title: "Drawtube",
 
   link: [
     {
-      rel: 'manifest',
-      href: '/manifest.webmanifest',
-      crossorigin: 'use-credentials'
+      rel: "manifest",
+      href: "/manifest.webmanifest",
+      crossorigin: "use-credentials"
     }
   ],
   meta: [
-    { name: 'theme-color', content: '#ffffff' },
-    { name: 'description', content: 'drawtube' }
+    { name: "theme-color", content: "#ffffff" },
+    { name: "description", content: "drawtube" }
   ]
 });
 </script>

@@ -2,6 +2,7 @@ const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 
 const Draft = require("../controller/Draft");
+const checkAuth = require("../middlewares/CheckAuth");
 
 const router = express.Router();
 //--------------------------------------------------------//
@@ -9,9 +10,9 @@ const router = express.Router();
 // VERIFY USER TOKEN AND GET USERID
 //--------------------------------------------------------//
 // GET - ALL USER's DRAFT
-router.get("/:uid", async (req, res) => {
-    const { uid } = req.params.id;
-
+router.get("/", checkAuth, async (req, res) => {
+    const uid = req.user._id;
+    console.log("myId", uid);
     //----------------------------------------------------//
     // getting results
     let result;
@@ -26,6 +27,7 @@ router.get("/:uid", async (req, res) => {
             code: 500,
         });
     }
+
     //----------------------------------------------------//
     // checking if results are undefined
     if (!result) {
@@ -52,14 +54,15 @@ router.get("/:uid", async (req, res) => {
 //
 //--------------------------------------------------------//
 // GET - ONE DRAFT BY id
-router.get("/:uid/:id", async (req, res) => {
-    const { id, uid } = req.params.id;
+router.get("/:id", checkAuth, async (req, res) => {
+    const { id } = req.params;
+    const uid = req.user._id;
 
     //----------------------------------------------------//
     // getting results
     let result;
     try {
-        result = await Draft.getOneByID(id);
+        result = await Draft.getOneByUID(id, uid);
     } catch (e) {
         return res.status(404).json({
             type: "CLIENT",
@@ -72,6 +75,8 @@ router.get("/:uid/:id", async (req, res) => {
 
     //----------------------------------------------------//
     // checking if results are undefined
+    console.log(id, uid);
+    console.log("id res", result);
     if (!result) {
         return res.status(404).json({
             type: "CLIENT",
@@ -96,8 +101,8 @@ router.get("/:uid/:id", async (req, res) => {
 //
 //--------------------------------------------------------//
 // CREATE - NEW DRAFT
-router.post("/:uid/", async (req, res) => {
-    const { uid } = req.params;
+router.post("/", checkAuth, async (req, res) => {
+    const uid = req.user._id;
     const { name, datauri } = req.body;
 
     //----------------------------------------------------//
@@ -111,6 +116,7 @@ router.post("/:uid/", async (req, res) => {
         message: "Cant create workspace,try animating offline instead",
         code: 500,
     };
+
     //----------------------------------------------------//
     // UPLOAD TO CLOUD
 
@@ -118,6 +124,7 @@ router.post("/:uid/", async (req, res) => {
     try {
         cloudResult = await Draft.uploadJSON(datauri, uniqueId);
     } catch (e) {
+        dbError.error = e;
         return res.status(500).json(dbError);
     }
 
@@ -164,7 +171,7 @@ router.post("/:uid/", async (req, res) => {
 //
 //--------------------------------------------------------//
 // UPDATE - DRAFT CLOUD data
-router.put("/:uid/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { datauri } = req.body;
     const { autosave } = req.query;
