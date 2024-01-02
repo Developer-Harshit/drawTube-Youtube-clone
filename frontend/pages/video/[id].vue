@@ -25,6 +25,7 @@
     </article>
   </div>
   <div>
+    ROute param : {{ $route.params.id }}
     Data:
     {{ data }}
   </div>
