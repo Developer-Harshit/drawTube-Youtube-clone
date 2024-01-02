@@ -16,11 +16,11 @@ export default defineNuxtConfig({
     public: resolve(__dirname, './public')
   },
   css: ['~/assets/icon-style.css'],
-  //   nitro: {
-  //     prerender: {
-  //       routes: ['/', 'login', 'signin', '/editor', '/search', '/logout']
-  //     }
-  //   },
+  nitro: {
+    prerender: {
+      routes: ['/', 'login', 'signin', '/editor', '/search', '/logout']
+    }
+  },
   pwa: {
     registerType: 'autoUpdate',
 
