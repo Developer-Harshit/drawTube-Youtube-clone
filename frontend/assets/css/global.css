@@ -1,0 +1,6 @@
+.dark-mode {
+  --bg: black;
+}
+.light-mode {
+  --bg: wheat;
+}

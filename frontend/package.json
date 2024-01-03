@@ -3,19 +3,21 @@
   "description": "thisIsdescription",
   "private": false,
   "scripts": {
-    "dev": "nuxt dev --port 6969",
+    "dev": "nuxi cleanup && nuxi dev --port 6969",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "serve": "esno .output/server/index.mjs",
-    "p:ish": "pnpm install --shamefully-hoist",
-    "p:up": "pnpm up"
+    "clean": "nuxi cleanup"
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.5",
     "@nuxt/image": "^1.1.0",
-    "@vite-pwa/nuxt": "^0.3.5",
-    "nuxt": "latest"
+    "@nuxtjs/color-mode": "^3.3.2",
+    "@nuxtjs/tailwindcss": "^6.10.3",
+    "@unlazy/nuxt": "^0.10.3",
+    "@vite-pwa/nuxt": "^0.4.0",
+    "nuxt": "^3.9.0"
   }
 }

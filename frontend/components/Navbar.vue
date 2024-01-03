@@ -1,27 +1,37 @@
 <script setup>
 // home search create profile logout
-const navLinks = [
+const user = useUser();
+const publicLinks = [
   { to: "/", icon: "home", text: "Home" },
   { to: "/search", icon: "search", text: "Search" },
-  { to: "/editor", icon: "add", text: "Create" },
-  { to: "/signin", icon: "person", text: "Profile" },
-  { to: "/logout", icon: "logout", text: "Logout" }
+  { to: "/editor", icon: "add", text: "Create" }
 ];
+const navLinks = computed(() => {
+  if (user.value.legit)
+    return [
+      ...publicLinks,
+      { to: "/profile", icon: "person", text: "Profile" },
+      { to: "/logout", icon: "logout", text: "Logout" }
+    ];
+
+  return [
+    ...publicLinks,
+    { to: "/signup", icon: "lock", text: "Signup" },
+    { to: "/login", icon: "lock", text: "Login" }
+  ];
+});
 </script>
 <template>
   <nav class="nav">
-    <NuxtLink
-      v-for="link in navLinks"
-      :key="link.text"
-      :to="link.to"
-      class="nav-link"
-    >
-      <i class="material-icons nav-icon">{{ link.icon }}</i>
-      <span class="nav-text">{{ link.text }}</span>
-    </NuxtLink>
+    <template v-for="link in navLinks" :key="link.text">
+      <NuxtLink :to="link.to" class="nav-link">
+        <i class="material-icons nav-icon">{{ link.icon }}</i>
+        <span class="nav-text">{{ link.text }}</span>
+      </NuxtLink>
+    </template>
   </nav>
 </template>
-<style src="../assets/icon.css"></style>
+
 <style scoped>
 body {
   margin: 0 0 55px 0;

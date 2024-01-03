@@ -20,10 +20,10 @@ class User {
             _id: id,
         });
     }
-    static async findByTag(userhandle) {
+    static async findByHandle(handle) {
         const UsersCollection = getDB().collection(dbName);
         return await UsersCollection.findOne({
-            handle: userhandle,
+            handle: handle,
         });
     }
     static async uploadData(data) {

@@ -1,10 +1,22 @@
 <template>
   <li class="video-list">
     <NuxtLink :to="videoLink">
-      <NuxtImg :src="videoThumbnail" class="video-thumbnail" quality="50" />
+      <UnLazyImage
+        :src="videoThumbnail"
+        placeholder-src="/skeleton/profile.png"
+        class="video-thumbnail"
+        auto-sizes
+        alt="thumbnail"
+      />
     </NuxtLink>
     <div class="video-info">
-      <NuxtImg :src="userProfile" quality="50" />
+      <UnLazyImage
+        :src="userProfile"
+        blurhash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+        auto-sizes
+        alt="userprofile"
+      />
+
       <article class="video-detail">
         <p>{{ videoTitle }}</p>
         <div>
@@ -22,4 +34,4 @@
 )
 </script>
 <style></style>
-<style src="assets/styles/videoItem.css"></style>
+<style src="assets/css/videoItem.css"></style>

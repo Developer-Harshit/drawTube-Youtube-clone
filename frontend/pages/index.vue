@@ -1,6 +1,21 @@
 <template>
+  <select v-model="$colorMode.preference">
+    <option value="system">System</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+
   <VideoFinder></VideoFinder>
 </template>
+
+<script setup>
+const colorMode = useColorMode();
+
+console.log("Pref: ", colorMode.preference);
+
+const { finder, pending, sucess, videos } = useFinder();
+finder();
+</script>
 
 <style>
 .video-ul {

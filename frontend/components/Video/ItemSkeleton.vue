@@ -1,8 +1,17 @@
 <template>
   <li class="skeleton-list video-list">
-    <img src="/skeleton/thumbnail.png" class="video-thumbnail" />
+    <UnLazyImage
+      src="/temp/thumbnail.png"
+      placeholder-src="/skeleton/thumbnail.png"
+      class="video-thumbnail"
+      auto-sizes
+      alt="thumbnail"
+    />
     <div class="video-info">
-      <img src="/skeleton/profile.png" />
+      <img
+        src="/skeleton/profile.png"
+        blurhash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+      />
       <article class="video-detail">
         <p></p>
         <div>
@@ -14,7 +23,7 @@
   </li>
 </template>
 
-<style src="assets/styles/videoItem.css"></style>
+<style src="assets/css/videoItem.css"></style>
 <style scoped>
 .skeleton-list {
   animation: pulse 2s ease-in-out infinite;

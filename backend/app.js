@@ -3,6 +3,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const json = express.json;
+
 require("dotenv").config();
 const { connectDB } = require("./database/db.js");
 //--------------------------------------------------------//
@@ -10,11 +13,8 @@ const { connectDB } = require("./database/db.js");
 //--------------------------------------------------------//
 // Config
 app.use(bodyParser.urlencoded({ extended: true, limit: "512mb" }));
-app.use(
-    express.json({
-        limit: "512MB",
-    })
-);
+app.use(json({ limit: "512MB" }));
+app.use(cors({ origin: process.env.APP_URL }));
 //--------------------------------------------------------//
 //
 //--------------------------------------------------------//

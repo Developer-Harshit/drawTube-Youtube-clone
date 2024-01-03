@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
     // type: "SEARCH" || "ALL" || NULL
     // from : NUMBER
     // count : NUMBER
+
     const { type, from, count } = req.query;
 
     let findQuery = {};
@@ -29,7 +30,7 @@ router.get("/", async (req, res) => {
     // getting results
     let result;
     try {
-        result = await Video.getAll(from, count, findQuery);
+        result = await Video.getAll(+from, +count, findQuery);
     } catch (e) {
         return res.status(500).json({
             type: "SERVER",

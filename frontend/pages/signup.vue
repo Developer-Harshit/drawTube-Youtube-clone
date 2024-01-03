@@ -1,7 +1,16 @@
 <template>
-  LOGIN
+  SIGNUP
   <div>USER: {{ user }}</div>
-  <form method="POST" @submit.prevent="submitForm('log')">
+  <form method="POST" @submit.prevent="submitForm('sign')">
+    <div>
+      <label for="username">Username</label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        v-model="formData.name"
+      />
+    </div>
     <div>
       <label for="userhandle">Handle</label>
       <input

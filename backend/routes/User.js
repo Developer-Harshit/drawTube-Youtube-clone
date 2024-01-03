@@ -9,7 +9,7 @@ const router = express.Router();
 //--------------------------------------------------------//
 // GET - ALL USER's DRAFT
 router.post("/sign", async (req, res) => {
-    const { username, userhandle, password } = req.body;
+    const { name, handle, password } = req.body;
     console.log(typeof process.env.SALT_ROUNDS);
     //----------------------------------------------------//
     // VERIFY FOR VALID DATA
@@ -20,11 +20,11 @@ router.post("/sign", async (req, res) => {
         message: "Invalid or empty data fields",
     };
     if (
-        !username ||
-        !userhandle ||
+        !name ||
+        !handle ||
         !password ||
-        username.length < 3 ||
-        userhandle.length < 3 ||
+        name.length < 3 ||
+        handle.length < 3 ||
         password.length < 5
     )
         return res.status(400).json(verifyError);
@@ -32,7 +32,7 @@ router.post("/sign", async (req, res) => {
     // VERIFY IF USER ALREADY EXISTS
     let mongoResult;
     try {
-        mongoResult = await User.findByTag(userhandle);
+        mongoResult = await User.findByHandle(handle);
     } catch (e) {
         return res.status(500).json({
             sucess: false,
@@ -56,8 +56,8 @@ router.post("/sign", async (req, res) => {
     let result;
     const userData = {
         _id: uniqueId,
-        name: username,
-        handle: userhandle,
+        name: name,
+        handle: handle,
         password: hashed,
         profile: User.getLink(uniqueId),
         legit: true,
@@ -84,6 +84,7 @@ router.post("/sign", async (req, res) => {
         name: userData.name,
         handle: userData.handle,
         profile: userData.profile,
+        legit: true,
     });
     //----------------------------------------------------//
     // Send token as sucess response
@@ -93,7 +94,13 @@ router.post("/sign", async (req, res) => {
         error: false,
         result: {
             token: token,
-            id: result.inserted_id,
+            user: {
+                id: uniqueId,
+                name: name,
+                handle: handle,
+                profile: userData.profile,
+                legit: true,
+            },
         },
     });
 });
@@ -103,7 +110,7 @@ router.post("/sign", async (req, res) => {
 //--------------------------------------------------------//
 // GET - ONE DRAFT BY id
 router.post("/log", async (req, res) => {
-    const { userhandle, password } = req.body;
+    const { handle, password } = req.body;
 
     //----------------------------------------------------//
     // VERIFY IF USER ALREADY EXISTS
@@ -113,9 +120,9 @@ router.post("/log", async (req, res) => {
         type: "CLIENT",
         message: "User does not exist",
     };
-    let mongoResult;
+    let userData;
     try {
-        mongoResult = await User.findByTag(userhandle);
+        userData = await User.findByHandle(handle);
     } catch (e) {
         return res.status(500).json({
             sucess: false,
@@ -125,11 +132,11 @@ router.post("/log", async (req, res) => {
         });
     }
 
-    if (!mongoResult) return res.status(400).json(verifyError);
+    if (!userData) return res.status(400).json(verifyError);
 
     //----------------------------------------------------//
     // COMPARE PASSWORD
-    const hashed = mongoResult.password;
+    const hashed = userData.password;
     if (!(await User.compare(password, hashed))) {
         verifyError.message = "Password does not match";
         return res.status(400).json(verifyError);
@@ -137,14 +144,14 @@ router.post("/log", async (req, res) => {
 
     //----------------------------------------------------//
     // GENERATE TOKEN
-
-    const token = Auth.register({
-        id: mongoResult._id,
-        name: mongoResult.name,
-        handle: mongoResult.handle,
-        profile: mongoResult.profile,
+    const resData = {
+        id: userData._id,
+        name: userData.name,
+        handle: userData.handle,
+        profile: userData.profile,
         legit: true,
-    });
+    };
+    const token = Auth.register(resData);
     //----------------------------------------------------//
     // Send token as sucess response
     return res.status(200).json({
@@ -153,6 +160,7 @@ router.post("/log", async (req, res) => {
         error: false,
         result: {
             token: token,
+            user: resData,
         },
     });
 });
@@ -160,7 +168,7 @@ router.post("/log", async (req, res) => {
 //
 //
 //--------------------------------------------------------//
-// UPDATE - Username
+// UPDATE - name
 router.put("/update/name", checkAuth, async (req, res) => {
     const { name } = req.body;
     //----------------------------------------------------//

@@ -1,16 +1,4 @@
-<template>
-  <div>
-    <UnLazyImage
-      :src="userImg"
-      placeholder-src="/skeleton/profile.png"
-      auto-sizes
-    />
-
-    <p>
-      <slot />
-    </p>
-  </div>
-</template>
+<template></template>
 <script setup>
 defineProps({
   userImg: "string"

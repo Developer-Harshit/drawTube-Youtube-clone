@@ -1,12 +1,20 @@
 <template>
-  <div>
-    <Teleport to="body">
-      <Navbar></Navbar>
-    </Teleport>
+  <Navbar></Navbar>
 
+  <header></header>
+  <main>
     <slot />
-  </div>
+  </main>
+  <footer></footer>
 </template>
+
+<script setup>
+useHead({
+  bodyAttrs: {
+    class: "default"
+  }
+});
+</script>
 <style>
 .default {
   margin: 0;
@@ -27,11 +35,3 @@
   background-color: rgba(236, 182, 182, 0.928);
 }
 </style>
-
-<script setup>
-useHead({
-  bodyAttrs: {
-    class: "default"
-  }
-});
-</script>

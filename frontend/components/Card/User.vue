@@ -5,7 +5,6 @@
       placeholder-src="/skeleton/profile.png"
       auto-sizes
     />
-
     <p>
       <slot />
     </p>
