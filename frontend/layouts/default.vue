@@ -1,11 +1,12 @@
 <template>
-  <Navbar></Navbar>
-
-  <header></header>
+  <header>
+    <NavTop />
+  </header>
   <main>
     <slot />
   </main>
-  <footer></footer>
+  <footer class="p-20"></footer>
+  <NavMain />
 </template>
 
 <script setup>

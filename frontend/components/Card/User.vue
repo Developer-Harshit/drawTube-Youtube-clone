@@ -1,10 +1,10 @@
 <template>
   <div>
-    <UnLazyImage
+    <LazyNuxtImg
+      placeholder="/skeleton/profile.png"
       :src="userImg"
-      placeholder-src="/skeleton/profile.png"
-      auto-sizes
-    />
+    ></LazyNuxtImg>
+
     <p>
       <slot />
     </p>

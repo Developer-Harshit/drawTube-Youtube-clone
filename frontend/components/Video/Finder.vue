@@ -5,9 +5,9 @@
         v-for="video in videos"
         :key="video._id"
         :video-link="'/video/' + video._id"
-        :video-title="video.title"
+        :video-title="video.name"
         video-thumbnail="/temp/thumbnail.png"
-        user-profile="/temp/profile.png"
+        :user-profile="video.user.profile"
         user-name="Username"
         video-date="6 June 2021"
       >
@@ -20,11 +20,7 @@
 </template>
 
 <script setup>
-const videos = [];
-
-// const { data, pending, error, refresh } = useLazyFetch(
-//   'http://localhost:5000/video'
-// );
+defineProps(["videos"]);
 </script>
 
 <style scoped>

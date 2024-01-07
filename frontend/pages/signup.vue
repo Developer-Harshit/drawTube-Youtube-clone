@@ -2,33 +2,30 @@
   SIGNUP
   <div>USER: {{ user }}</div>
   <form method="POST" @submit.prevent="submitForm('sign')">
-    <div>
-      <label for="username">Username</label>
-      <input
-        type="text"
-        name="username"
-        id="username"
-        v-model="formData.name"
-      />
-    </div>
-    <div>
-      <label for="userhandle">Handle</label>
-      <input
-        type="text"
-        name="userhandle"
-        id="userhandle"
-        v-model="formData.handle"
-      />
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input
-        type="text"
-        name="password"
-        id="password"
-        v-model="formData.password"
-      />
-    </div>
+    <UIInput
+      type="text"
+      field="username"
+      v-model="formData.name"
+      @update:model-value="(val) => (formData.name = val)"
+    >
+      Username
+    </UIInput>
+    <UIInput
+      type="text"
+      field="userhandle"
+      v-model="formData.handle"
+      @update:model-value="(val) => (formData.handle = val)"
+    >
+      Handle
+    </UIInput>
+    <UIInput
+      type="password"
+      field="password"
+      v-model="formData.password"
+      @update:model-value="(val) => (formData.password = val)"
+    >
+      Password
+    </UIInput>
     <div>
       <button type="submit">Submit</button>
     </div>

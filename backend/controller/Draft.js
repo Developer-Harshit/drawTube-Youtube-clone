@@ -26,7 +26,6 @@ class Draft {
             public_id: getPublicId(fileid),
             resource_type: "raw",
             overwrite: true,
-            chunk_size: (1024 * 1024) / 2,
         });
     }
     static getLink(fileid) {

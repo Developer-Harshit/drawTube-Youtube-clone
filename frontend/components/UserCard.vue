@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UnLazyImage
+    <LazyNuxtImg
       :src="userImg"
       placeholder-src="/skeleton/profile.png"
       auto-sizes

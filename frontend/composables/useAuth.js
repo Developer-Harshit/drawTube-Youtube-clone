@@ -24,16 +24,16 @@ export const useAuth = () => {
       body: JSON.stringify(formData)
     })
       .then((res) => {
-        console.log("FORM: ", JSON.stringify(formData));
-        console.log("RESPONSE: ", res);
+        //console.log("FORM: ", JSON.stringify(formData));
+        //console.log("RESPONSE: ", res);
         return res.json();
       })
       .then((data) => {
         pending.value = false;
-        console.log("DATA: ", data);
+        //console.log("DATA: ", data);
         sucess.value = data.sucess || false;
         if (data.result.token && data.result.user) {
-          console.log(data.result.token);
+          //console.log(data.result.token);
           // add cookie to localstorage
           if (process.client) localStorage.setItem("token", data.result.token);
           useIsauth().value = true;
@@ -43,7 +43,7 @@ export const useAuth = () => {
         // redirect to home page
       })
       .catch((e) => {
-        console.log("there is error", e);
+        //console.log("there is error", e);
         return;
       });
   }

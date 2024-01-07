@@ -1,13 +1,3 @@
 <script setup>
-
+navigateTo("/editor/offline");
 </script>
-
-<template>
-  <div>
-    
-  </div>
-</template>
-
-<style scoped>
-
-</style>

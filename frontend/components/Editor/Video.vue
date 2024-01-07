@@ -64,8 +64,8 @@ const createFrame = () => {
 
 const onDataLoaded = (e) => {
   const jsonData = JSON.parse(e.target.result);
-  console.log(jsonData);
-  if (jsonData.type != 'editor') return false;
+  //console.log(jsonData);
+  if (jsonData.type != "editor") return false;
   editor.surfaces = [];
   idx.value = 0;
   for (let i = 0; i < jsonData.frames.length; i++) {
@@ -83,12 +83,12 @@ const onDataLoaded = (e) => {
 };
 const loadData = () => {
   if (!datainput.value) {
-    console.log('returning');
+    //console.log('returning');
     return;
   }
   const allFiles = datainput.value.files;
   if (!(allFiles.length > 0)) {
-    console.log('returning');
+    //console.log('returning');
     return;
   }
   const jsonFile = allFiles[0];
@@ -104,18 +104,18 @@ const saveData = () => {
 
   for (let i = 0; i < editor.surfaces.length; i++) {
     const surf = editor.surfaces[i];
-    const dataUrl = surf.cnv.toDataURL('image/png', 1);
+    const dataUrl = surf.cnv.toDataURL("image/png", 1);
     frameUrls.push(dataUrl);
   }
   const finalData = {
-    type: 'editor',
+    type: "editor",
     frames: frameUrls
   };
 
   const encodedData =
-    'data:application/json;base64,' + btoa(JSON.stringify(finalData));
+    "data:application/json;base64," + btoa(JSON.stringify(finalData));
   downloadbtn.value.href = encodedData;
-  console.log(downloadbtn.value.href);
+  //console.log(downloadbtn.value.href);
   downloadbtn.value.click();
 };
 
@@ -127,7 +127,7 @@ onMounted(() => {
     requestAnimationFrame(animate);
     if (isPlaying.value) return;
 
-    editor.fill(editor, '#212121');
+    editor.fill(editor, "#212121");
     if (isOnion.value && idx.value > 0) editor.drawOnion();
     else editor.draw(editor.get());
   }

@@ -1,20 +1,19 @@
 <template>
-  <select v-model="$colorMode.preference">
-    <option value="system">System</option>
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-  </select>
+  <!-- <div>{{ videos }}</div> -->
 
-  <VideoFinder></VideoFinder>
+  <VideoFinder :videos="videos"></VideoFinder>
+  <button @click="finder()">Load more</button>
 </template>
 
 <script setup>
 const colorMode = useColorMode();
 
-console.log("Pref: ", colorMode.preference);
+//console.log("Pref: ", colorMode.preference);
 
-const { finder, pending, sucess, videos } = useFinder();
-finder();
+const { finder, pending, sucess, videos } = useVideo();
+onMounted(() => {
+  finder();
+});
 </script>
 
 <style>

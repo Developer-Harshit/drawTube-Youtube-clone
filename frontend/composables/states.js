@@ -1,3 +1,4 @@
+export const useShowNav = () => useState("shownav", () => true);
 export const useIsauth = () => useState("isauth", () => false);
 export const useUser = () =>
   useState("user", () => ({

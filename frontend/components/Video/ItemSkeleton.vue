@@ -1,6 +1,6 @@
 <template>
   <li class="skeleton-list video-list">
-    <UnLazyImage
+    <LazyNuxtImg
       src="/temp/thumbnail.png"
       placeholder-src="/skeleton/thumbnail.png"
       class="video-thumbnail"

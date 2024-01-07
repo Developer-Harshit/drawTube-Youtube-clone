@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: ["@nuxtjs/tailwindcss", "@unlazy/nuxt", "@nuxtjs/color-mode"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxt/image", "@nuxtjs/color-mode"],
   tailwindcss: {
     cssPath: "~/assets/css/tailwind.css",
     configPath: "tailwind.config.js",
@@ -33,23 +33,21 @@ export default defineNuxtConfig({
     classSuffix: "-mode",
     storageKey: "nuxt-color-mode"
   },
-  unlazy: {
-    ssr: true
-  },
-  devtools: {
-    enabled: true,
-    vscode: {},
 
-    timeline: {
-      enabled: false
-    }
-  },
+  devtools: { enabled: true },
+  //    {
+  //     enabled: true,
+  //     vscode: {},
+
+  //     timeline: {
+  //       enabled: false
+  //     }
+  //   },
   runtimeConfig: {
     // The private keys which are only available within server-side
     // Keys within public, will be also exposed to the client-side
     public: {
-      API_URL: process.env.API_URL || "http://localhost:5000",
-      apiBase: "/api"
+      API_URL: process.env.API_URL || "http://localhost:5000"
     }
   },
 

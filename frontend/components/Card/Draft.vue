@@ -1,30 +1,12 @@
-<template></template>
-<script setup>
-defineProps({
-  userImg: "string"
-});
-</script>
-<style scoped>
-div {
-  background-color: rgba(214, 211, 211, 0.57);
-  color: rgb(90, 89, 88);
-  font-weight: 600;
+<template>
+  <div class="flex flex-col flex-wrap bg-slate-600 text-gray-50">
+    <div>Title : {{ title }}</div>
+    <NuxtLink :to="link">Link</NuxtLink>
 
-  border-radius: 10px;
-  flex-wrap: wrap;
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  gap: 0 1rem;
-  padding: 1rem;
-  margin: 1rem 0rem;
-  margin-bottom: 5rem;
-}
-img {
-  width: 4rem;
-  height: 4rem;
-  border: 2px solid white;
-  border-radius: 50px;
-}
-</style>
+    <div>Url : {{ url }}</div>
+  </div>
+</template>
+<script setup>
+defineProps(["title", "link", "url"]);
+</script>
+<style scoped></style>

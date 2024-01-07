@@ -1,12 +1,12 @@
 <template>
-  <div class="video-div" v-if="video && state">
+  <div class="video-div" v-if="sucess">
     <video controls autoPlay crossorigin="anonymus">
       <source :src="video.url" type="video/mp4" />
     </video>
     <article class="info">
       <h2>Description</h2>
       <p class="title">
-        {{ video.title }}
+        {{ video.name }}
       </p>
       <div class="detail">
         <p><span>Likes</span> <span>0</span></p>
@@ -17,34 +17,23 @@
         {{ video.desc }}
       </LongText>
 
-      <!-- <img src="/temp/profile.png" /> -->
-      <UserCard :user-img="user.profile"> {{ user.name }} </UserCard>
+      <UserCard :user-img="video.user.profile">
+        {{ video.user.name }}
+      </UserCard>
     </article>
-  </div>
-  <div>
-    ROute param : {{ $route.params.id }}
-    Data:
-    {{ data }}
   </div>
 </template>
 <script setup>
-const route = useRoute();
+const { finder, video, sucess, pending } = useVideo();
 
-const video = {
+finder(useRoute().params.id);
+
+const videos = {
   user: { profile: "ha" },
   title: "test title",
   desc: "test desc",
   url: "test url"
 };
-const user = {
-  name: "test name",
-  profile: "test",
-  handle: "testhandle"
-};
-const state = ref(true);
-const { data, pending, error, refresh } = await useFetch(
-  "http://localhost:5000/video/" + route.params.id
-);
 </script>
 <style scoped>
 .video-div {

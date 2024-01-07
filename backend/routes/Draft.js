@@ -121,13 +121,15 @@ router.post("/", checkAuth, async (req, res) => {
     // UPLOAD TO CLOUD
 
     let cloudResult;
+
     try {
         cloudResult = await Draft.uploadJSON(datauri, uniqueId);
     } catch (e) {
         dbError.error = e;
         return res.status(500).json(dbError);
     }
-
+    // if (datauri)
+    console.log("Done till here");
     if (!cloudResult || !cloudResult.public_id || !cloudResult.secure_url)
         return res.status(500).json(dbError);
 

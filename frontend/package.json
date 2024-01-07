@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "serve": "esno .output/server/index.mjs",
-    "clean": "nuxi cleanup"
+    "clean": "nuxi cleanup",
+    "server": "cd ../backend && npm run dev"
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.5",

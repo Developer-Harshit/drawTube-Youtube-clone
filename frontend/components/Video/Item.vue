@@ -1,7 +1,7 @@
 <template>
   <li class="video-list">
     <NuxtLink :to="videoLink">
-      <UnLazyImage
+      <LazyNuxtImg
         :src="videoThumbnail"
         placeholder-src="/skeleton/profile.png"
         class="video-thumbnail"
@@ -10,7 +10,7 @@
       />
     </NuxtLink>
     <div class="video-info">
-      <UnLazyImage
+      <LazyNuxtImg
         :src="userProfile"
         blurhash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
         auto-sizes

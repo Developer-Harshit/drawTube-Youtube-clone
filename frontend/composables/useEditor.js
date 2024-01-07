@@ -29,14 +29,14 @@ export const useEditor = () => {
       isPlaying.value = true;
       this.idx.value = 0;
       this.interval = setInterval(() => {
-        this.fill(this, '#212121');
+        this.fill(this, "#212121");
         this.draw(this.get());
         this.idx.value += 1;
         if (this.idx.value == this.surfaces.length || !isPlaying.value) {
           isPlaying.value = false;
           this.idx.value = 0;
           clearInterval(this.interval);
-          console.log('cleared');
+          //console.log('cleared');
         }
       }, frameTimeMS);
     }

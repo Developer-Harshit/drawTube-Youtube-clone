@@ -2,6 +2,14 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const user = useUser();
   const isauth = useAuth();
 
+  // Get token
+
+  // Fetch verify req and get user details
+
+  // Set user details to useUser
+
+  const authrRoutes = ["/editor/saved", "/profile", "/logout"];
+  const nonAuthRoutes = ["/login", "/signup"];
   if (process.client) {
     let token = localStorage.getItem("token");
     if (token) isauth.value = true;
