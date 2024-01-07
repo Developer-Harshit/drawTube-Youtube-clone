@@ -1,6 +1,6 @@
 {
   "name": "youtubeclone",
-  "description": "thisIsdescription",
+  "description": "mydesc",
   "private": false,
   "scripts": {
     "dev": "nuxi cleanup && nuxi dev --port 6969",
